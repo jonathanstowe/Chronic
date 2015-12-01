@@ -18,4 +18,18 @@ class Chronic {
     }
 
 }
+
+use MONKEY-TYPING;
+
+augment class DateTime {
+    multi method ACCEPTS(Chronic::Description $d) returns Bool {
+        self.minute       ~~ $d.minute &&
+        self.hour         ~~ $d.hour   &&
+        self.day          ~~ $d.day    &&
+        self.month        ~~ $d.month  &&
+        self.day-of-week  ~~ $d.day-of-week;
+    }
+    
+}
+
 # vim: ft=perl6 expandtab sw=4
