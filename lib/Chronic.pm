@@ -7,6 +7,9 @@ class Chronic {
         multi sub get-minutes(Whatever $) {
             get-minutes($minute-range);
         }
+        multi sub get-minutes('*') {
+            get-minutes(*);
+        }
         multi sub get-minutes(Range $r where {all($_.list) ~~ $minute-range}) {
             get-minutes($r.list);
         }
@@ -21,6 +24,9 @@ class Chronic {
         my Range $hour-range = 0 .. 23;
         multi sub get-hours(Whatever $) {
             get-hours($hour-range);
+        }
+        multi sub get-hours('*') {
+            get-hours(*);
         }
         multi sub get-hours(Range $r where {all($_.list) ~~ $hour-range}) {
             get-hours($r.list);
@@ -37,6 +43,9 @@ class Chronic {
         multi sub get-days(Whatever $) {
             get-days($day-range);
         }
+        multi sub get-days('*') {
+            get-days(*);
+        }
         multi sub get-days(Range $r where {all($_.list) ~~ $day-range}) {
             get-days($r.list);
         }
@@ -51,6 +60,9 @@ class Chronic {
         my Range $month-range = 1 .. 12;
         multi sub get-months(Whatever $) {
             get-months($month-range);
+        }
+        multi sub get-months('*') {
+            get-months(*);
         }
         multi sub get-months(Range $r where {all($_.list) ~~ $month-range}) {
             get-months($r.list);
@@ -67,6 +79,9 @@ class Chronic {
         multi sub get-dows(Whatever $) {
             get-dows($dow-range);
         }
+        multi sub get-dows('*') {
+            get-dows(*);
+        }
         multi sub get-dows(Range $r where {all($_.list) ~~ $dow-range}) {
             get-dows($r.list);
         }
@@ -77,6 +92,31 @@ class Chronic {
             any(@m);
         }
         has Junction $.day-of-week  is rw = get-dows(*);
+
+
+        my %params = (
+            minute      =>  &get-minutes,
+            hour        =>  &get-hours,
+            day         =>  &get-days,
+            month       =>  &get-months,
+            day-of-week =>  &get-dows
+        );
+
+        multi method new(*%args) {
+            my %new-args;
+
+            for %args.kv -> $k, $v {
+                if %params{$k}:exists {
+                    %new-args{$k} = do if $v ~~ Junction {
+                        $v;
+                    }
+                    else {
+                        %params{$k}($v);
+                    }
+                }
+            }
+            self.bless(|%new-args);
+        }
 
         multi method ACCEPTS(DateTime $d) returns Bool {
             $d.minute       ~~ $!minute &&
