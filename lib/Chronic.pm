@@ -1,6 +1,6 @@
 use v6;
 
-class Chronic {
+class Chronic:ver<v0.0.1>:auth<github:jonathanstowe> {
     class Description {
 
         sub expand-expression(Str $exp, Range $r) returns Array[Int] {
@@ -174,6 +174,7 @@ class Chronic {
         }
 
         multi method ACCEPTS(DateTime $d) returns Bool {
+            $d.second.Int   == 0        &&
             $d.minute       ~~ $!minute &&
             $d.hour         ~~ $!hour   &&
             $d.day          ~~ $!day    &&
@@ -182,12 +183,33 @@ class Chronic {
         }
     }
 
+    #| This is a single supply for all clients in the process
+    my Supply $supply;
+
+    #| access the single supply creating it if necessary
+    method supply() {
+        if not $supply.defined {
+            $supply = Supply.on-demand( -> $p {
+                Supply.interval(1).tap({ $p.emit(DateTime.now); });
+            });
+        }
+        $supply;
+    }
+
+    #| create a supply that fires on the time specification
+    method every(*%args) returns Supply {
+        my $description = Description.new(|%args);
+        my $supply = self.supply.grep($description);
+        $supply;
+    }
+
 }
 
 use MONKEY-TYPING;
 
 augment class DateTime {
     multi method ACCEPTS(Chronic::Description $d) returns Bool {
+        self.second.Int   == 0         &&
         self.minute       ~~ $d.minute &&
         self.hour         ~~ $d.hour   &&
         self.day          ~~ $d.day    &&
