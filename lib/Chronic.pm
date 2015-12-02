@@ -3,6 +3,36 @@ use v6;
 class Chronic {
     class Description {
 
+        sub expand-expression(Str $exp, Range $r) returns Array[Int] {
+            my Int @values;
+
+            my ($top, $divisor) = $exp.split('/');
+
+            sub explode-item(Str $v) {
+	            if $v.contains('-') {
+		            my ( $min, $max ) = $v.split('-');
+		            my Range $r = $min.Int .. $max.Int;
+		            $r.list;
+	            }
+	            else {
+		            $v;
+                }
+            }
+
+            if $top eq '*' {
+                @values = $r.list;
+            }
+            else {
+                @values = $top.split(',').flatmap(&explode-item).map(*.Int);
+            }
+
+            if $divisor.defined {
+                @values = @values.grep( * %% $divisor.Int);
+            }
+
+            @values;
+        }
+
         my Range $minute-range = 0 .. 59;
         multi sub get-minutes(Whatever $) {
             get-minutes($minute-range);
@@ -10,13 +40,18 @@ class Chronic {
         multi sub get-minutes('*') {
             get-minutes(*);
         }
-        multi sub get-minutes(Range $r where {all($_.list) ~~ $minute-range}) {
-            get-minutes($r.list);
-        }
-        multi sub get-minutes(*@m where { all($_) ~~ $minute-range }) {
+        multi sub get-minutes(Str $exp) {
+            my Int @m = expand-expression($exp, $minute-range);
             get-minutes(@m);
         }
-        multi sub get-minutes(@m where { all($_) ~~ $minute-range }) {
+        multi sub get-minutes(Range $r where {all($_.list) ~~ $minute-range}) {
+            my Int @m = $r.list;
+            get-minutes(@m);
+        }
+        multi sub get-minutes(*@m where { all($_.list) ~~ $minute-range }) {
+            get-minutes(@m);
+        }
+        multi sub get-minutes(@m where { all($_.list) ~~ $minute-range }) {
             any(@m);
         }
         has Junction $.minute       is rw = get-minutes(*);
@@ -28,13 +63,18 @@ class Chronic {
         multi sub get-hours('*') {
             get-hours(*);
         }
-        multi sub get-hours(Range $r where {all($_.list) ~~ $hour-range}) {
-            get-hours($r.list);
-        }
-        multi sub get-hours(*@m where { all($_) ~~ $hour-range }) {
+        multi sub get-hours(Str $exp) {
+            my Int @m = expand-expression($exp, $hour-range);
             get-hours(@m);
         }
-        multi sub get-hours(@m where { all($_) ~~ $hour-range }) {
+        multi sub get-hours(Range $r where {all($_.list) ~~ $hour-range}) {
+            my Int @m = $r.list;
+            get-hours(@m);
+        }
+        multi sub get-hours(*@m where { all($_.list) ~~ $hour-range }) {
+            get-hours(@m);
+        }
+        multi sub get-hours(@m where { all($_.list) ~~ $hour-range }) {
             any(@m);
         }
         has Junction $.hour         is rw = get-hours(*);
@@ -46,13 +86,18 @@ class Chronic {
         multi sub get-days('*') {
             get-days(*);
         }
-        multi sub get-days(Range $r where {all($_.list) ~~ $day-range}) {
-            get-days($r.list);
-        }
-        multi sub get-days(*@m where { all($_) ~~ $day-range }) {
+        multi sub get-days(Str $exp) {
+            my Int @m = expand-expression($exp, $day-range);
             get-days(@m);
         }
-        multi sub get-days(@m where { all($_) ~~ $day-range }) {
+        multi sub get-days(Range $r where {all($_.list) ~~ $day-range}) {
+            my Int @m = $r.list;
+            get-days(@m);
+        }
+        multi sub get-days(*@m  where { all($_.list) ~~ $day-range }) {
+            get-days(@m);
+        }
+        multi sub get-days(@m where { all($_.list) ~~ $day-range }) {
             any(@m);
         }
         has Junction $.day          is rw = get-days(*);
@@ -64,13 +109,18 @@ class Chronic {
         multi sub get-months('*') {
             get-months(*);
         }
-        multi sub get-months(Range $r where {all($_.list) ~~ $month-range}) {
-            get-months($r.list);
-        }
-        multi sub get-months(*@m where { all($_) ~~ $month-range }) {
+        multi sub get-months(Str $exp) {
+            my Int @m = expand-expression($exp, $month-range);
             get-months(@m);
         }
-        multi sub get-months(@m where { all($_) ~~ $month-range }) {
+        multi sub get-months(Range $r where { all($_.list) ~~ $month-range }) {
+            my Int @m = $r.list;
+            get-months(@m);
+        }
+        multi sub get-months(*@m where { all($_.list) ~~ $month-range }) {
+            get-months(@m);
+        }
+        multi sub get-months(@m where { all($_.list) ~~ $month-range }) {
             any(@m);
         }
         has Junction $.month        is rw = get-months(*);
@@ -82,13 +132,18 @@ class Chronic {
         multi sub get-dows('*') {
             get-dows(*);
         }
-        multi sub get-dows(Range $r where {all($_.list) ~~ $dow-range}) {
-            get-dows($r.list);
-        }
-        multi sub get-dows(*@m where { all($_) ~~ $dow-range }) {
+        multi sub get-dows(Str $exp) {
+            my Int @m = expand-expression($exp, $dow-range);
             get-dows(@m);
         }
-        multi sub get-dows(@m where { all($_) ~~ $dow-range }) {
+        multi sub get-dows(Range $r where {all($_.list) ~~ $dow-range}) {
+            my Int @m = $r.list;
+            get-dows($r.list);
+        }
+        multi sub get-dows(*@m where { all($_.list) ~~ $dow-range }) {
+            get-dows(@m);
+        }
+        multi sub get-dows(@m where { all($_.list) ~~ $dow-range }) {
             any(@m);
         }
         has Junction $.day-of-week  is rw = get-dows(*);
