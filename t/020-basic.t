@@ -245,8 +245,10 @@ my @tests = (
     },
 );
 
-ok DateTime.now ~~ Chronic::Description.new, "default comparison works";
-ok Chronic::Description.new ~~ DateTime.now, "default comparison works (the other way round";
+my $d = DateTime.now;
+my $now = DateTime.new(date => $d.Date, minute => $d.minute, hour => $d.hour);
+ok $now ~~ Chronic::Description.new, "default comparison works";
+ok Chronic::Description.new ~~ $now, "default comparison works (the other way round";
 
 for @tests -> $test {
     $test<dt><year> = (1971 .. 2037).pick;
