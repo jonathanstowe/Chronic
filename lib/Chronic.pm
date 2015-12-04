@@ -1,5 +1,172 @@
 use v6;
 
+=begin pod
+
+=head1 NAME
+
+Chronic - provide low level scheduling facility
+
+=head1 SYNOPSIS
+
+=begin code
+
+# Static configuration;
+
+use Chronic;
+
+react {
+    # Every minute
+    whenever Chronic.every() -> $v {
+        say "One: $v";
+    }
+    # Every five minutes
+    whenever Chronic.every(minute => '*/5') -> $v {
+        say "Five: $v";
+    }
+    # At 21:31 every day
+    whenever Chronic.every(minute => 31, hour => 21) -> $v {
+        say "21:31 $v";
+    }
+
+}
+
+# Dynamic configuration
+
+use Chronic;
+
+my @events = (
+    {
+        schedule => {},
+        code     => sub ($v) { say "One: $v" },
+    },
+    {
+        schedule => { minute => '*/2' },
+        code     => sub ($v) { say "Two: $v" },
+    },
+    {
+        schedule => { minute => '*/5' },
+        code     => sub ($v) { say "Five: $v" },
+    },
+    {
+        schedule => { minute => 31, hour => 21 },
+        code     => sub ($v) {  say "21:31 $v"; },
+    },
+);
+
+for @events -> $event {
+    Chronic.every(|$event<schedule>).tap($event<code>);
+}
+
+# This has the effect of waiting forever
+Chronic.supply.wait;
+
+=end code
+
+=head1 DESCRIPTION
+
+This module provides a low-level scheduling mechanism, that be used to
+create cron-like schedules, the specifications can be provided as cron
+expression strings, lists of integer values or L<Junctions> of values.
+
+There is a single class method C<every> that takes a schedule specification
+and returns a L<Supply> that will emit a value (a L<DateTime>) on the
+schedule specified.
+
+This can be used to build custom scheduling services like C<cron> with
+additional code to read the specification from a file and arrange the
+execution of the required thing or it could be used in a larger program
+that may require to execute some code asynchronously periodically.
+
+There is a single base Supply that emits an event at a 1 second frequency
+in order to preserve the accuracy of the timings (in testing it may drift
+by up to 59 seconds on a long run due to system latency if it didn't 
+match the seconds too,) so this may be a problem on a heavily loaded
+single core computer. The sub-minute granularity isn't provided for in
+the interface as it is easily achieved anyway with a basic supply, it
+isn't supported by a standard C<cron> and I think most code that would
+want to be executed with that frequency would be more highly optimised then
+this may allow.
+
+
+=head1 METHODS
+
+=head2 method every
+
+    method every(*%args) returns Supply
+
+This returns a L<Supply> that will emit a value (a L<DateTime>
+indicating when the event was fired,) at the frequency specified by the
+arguments. The arguments are infact passed directly to the constructor
+of C<Chronic::Description> (described below,) which is used to match
+the times that an event should occur.
+
+=head2 method supply
+
+   method supply() returns Supply
+
+This is the base supply that emits the L<DateTime> at 1 second intervals,
+it is used internally but exposed in the possibility that it may be useful
+as in the synopsis for example.
+
+=head1 Chronic::Description
+
+This is the class that is used to match the L<DateTime> against the frequency
+specification, all of the attributes are an C<any> L<Junction> and by default
+will match any allowed value for the period unit (hence the default is a one
+minute frequency.)  
+
+The constructor allows the unit specifications to provided as Junctions,
+lists of integers, single integer values or strings in the form of cron
+specifications for that unit:
+
+
+     A field may be an asterisk (*), which always stands for ``first-last''.
+
+     Ranges of numbers are allowed.  Ranges are two numbers separated with a
+     hyphen.  The specified range is inclusive.  For example, 8-11 for an
+     ``hours'' entry specifies execution at hours 8, 9, 10 and 11.
+
+     Lists are allowed.  A list is a set of numbers (or ranges) separated by
+     commas.  Examples: ``1,2,5,9'', ``0-4,8-12''.
+
+     Step values can be used in conjunction with ranges.  Following a range
+     with ``/<number>'' specifies skips of the number's value through the
+     range.  For example, ``0-23/2'' can be used in the hours field to specify
+     command execution every other hour (the alternative in the V7 standard is
+     ``0,2,4,6,8,10,12,14,16,18,20,22'').  Steps are also permitted after an
+     asterisk, so if you want to say ``every two hours'', just use ``*/2''.
+
+(From the L<FreeBSD manpage from crontab(5)|https://www.freebsd.org/cgi/man.cgi?crontab(5)>). For brevity only the names and ranges of the values are
+described.  The "name" forms for C<month> and C<day-of-week> are currently
+not supported because the localisation issues seemed more trouble than it's
+worth.
+
+The allowed arguments to the constructor (and attributes of the class) are:
+
+=head2 minute
+
+The minutes in the specifcation should be matched in the range 0 .. 59
+
+=head2 hour
+
+The hours that should be matched in the specification in the range 0 .. 23
+
+=head2 day
+
+The days that should be matched in the specification, in the range 0 .. 31
+clearly not all months have all those days, but "step" specifications should
+have the same effect for e.g. "every three days".
+
+=head2 month
+
+The months that should be matched in the specification in the range 1 .. 12
+
+=head2 day-of-week
+
+The day of the week (starting on Monday) in the range 1 .. 7
+
+=end pod
+
 class Chronic:ver<v0.0.1>:auth<github:jonathanstowe> {
     class Description {
 
