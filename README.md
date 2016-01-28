@@ -2,6 +2,8 @@
 
 Scheduling thingy for Perl6
 
+[![Build Status](https://travis-ci.org/jonathanstowe/Chronic.svg?branch=master)](https://travis-ci.org/jonathanstowe/Chronic)
+
 ## Synopsis
 
 ```
