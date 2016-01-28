@@ -167,7 +167,7 @@ The day of the week (starting on Monday) in the range 1 .. 7
 
 =end pod
 
-class Chronic:ver<v0.0.1>:auth<github:jonathanstowe> {
+class Chronic:ver<0.0.2>:auth<github:jonathanstowe> {
     class Description {
 
         sub expand-expression(Str $exp, Range $r) returns Array[Int] {
