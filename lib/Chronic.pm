@@ -393,13 +393,13 @@ class Chronic:ver<0.0.4>:auth<github:jonathanstowe> {
     }
 
     multi method at(Int $i) returns Promise {
-        samewith(DateTime.new($i));
+        self.at(DateTime.new($i));
     }
     multi method at(Instant:D $i) returns Promise {
-        samewith(DateTime.new($i));
+        self.at(DateTime.new($i));
     }
     multi method at(Str:D $d) returns Promise {
-        samewith(DateTime.new($d));
+        self.at(DateTime.new($d));
     }
     multi method at(DateTime $d) returns Promise {
         my $datetime = $d.truncated-to('second');
