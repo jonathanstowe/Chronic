@@ -6,7 +6,7 @@
     "source": "git://github.com/jonathanstowe/Chronic.git",
     "bugtracker": "https://github.com/jonathanstowe/Chronic/issues"
   },
-  "perl": "6.c",
+  "perl": "6.^",
   "resources": [
     
   ],
