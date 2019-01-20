@@ -193,7 +193,7 @@ The day of the week (starting on Monday) in the range 1 .. 7
 class Chronic:ver<0.0.6>:auth<github:jonathanstowe> {
     class Description {
 
-        sub expand-expression(Str $exp, Range $r) returns Array[Int] {
+        sub expand-expression(Str $exp, Range $r --> Array[Int] ) {
             my Int @values;
 
             my ($top, $divisor) = $exp.split('/');
@@ -363,7 +363,7 @@ class Chronic:ver<0.0.6>:auth<github:jonathanstowe> {
             self.bless(|%new-args);
         }
 
-        multi method ACCEPTS(DateTime $d) returns Bool {
+        multi method ACCEPTS(DateTime $d --> Bool ) {
             $d.second.Int   == 0        &&
             $d.minute       ~~ $!minute &&
             $d.hour         ~~ $!hour   &&
@@ -377,7 +377,7 @@ class Chronic:ver<0.0.6>:auth<github:jonathanstowe> {
     my Supply $supply;
 
     #| access the single supply creating it if necessary
-    method supply() {
+    method supply( --> Supply ) {
         if not $supply.defined {
             $supply = Supply.on-demand( -> $p {
                 Supply.interval(1).tap({ $p.emit(DateTime.now.truncated-to('second')); });
@@ -387,22 +387,22 @@ class Chronic:ver<0.0.6>:auth<github:jonathanstowe> {
     }
 
     #| create a supply that fires on the time specification
-    method every(*%args) returns Supply {
+    method every(*%args --> Supply ) {
         my $description = Description.new(|%args);
         my $supply = self.supply.grep($description);
         $supply;
     }
 
-    multi method at(Int $i) returns Promise {
+    multi method at(Int $i --> Promise ) {
         self.at(DateTime.new($i));
     }
-    multi method at(Instant:D $i) returns Promise {
+    multi method at(Instant:D $i --> Promise ) {
         self.at(DateTime.new($i));
     }
-    multi method at(Str:D $d) returns Promise {
+    multi method at(Str:D $d --> Promise ) {
         self.at(DateTime.new($d));
     }
-    multi method at(DateTime $d) returns Promise {
+    multi method at(DateTime $d --> Promise ) {
         my $datetime = $d.truncated-to('second');
         my $promise = Promise.new;
         my $v = $promise.vow;
@@ -423,7 +423,7 @@ class Chronic:ver<0.0.6>:auth<github:jonathanstowe> {
 use MONKEY-TYPING;
 
 augment class DateTime {
-    multi method ACCEPTS(Chronic::Description $d) returns Bool {
+    multi method ACCEPTS(Chronic::Description $d --> Bool ) {
         self.second.Int   == 0         &&
         self.minute       ~~ $d.minute &&
         self.hour         ~~ $d.hour   &&
