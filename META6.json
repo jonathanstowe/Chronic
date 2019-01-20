@@ -1,5 +1,8 @@
 {
   "name": "Chronic",
+  "version": "0.0.7",
+  "auth": "github:jonathanstowe",
+  "api": "1.0",
   "source-url": "git://github.com/jonathanstowe/Chronic.git",
   "support": {
     "irc": "irc:// irc.freenode.net/#perl6",
@@ -12,7 +15,6 @@
   "build-depends": [
   ],
   "author": "Jonathan Stowe <jns+git@gellyfish.co.uk>",
-  "auth": "github:jonathanstowe",
   "depends": [
   ],
   "tags": [
@@ -28,7 +30,6 @@
   "provides": {
     "Chronic": "lib/Chronic.pm"
   },
-  "version": "0.0.6",
   "authors": [
     "Jonathan Stowe <jns+git@gellyfish.co.uk>"
   ],
