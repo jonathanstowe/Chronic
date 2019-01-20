@@ -158,10 +158,11 @@ specifications for that unit:
      ``0,2,4,6,8,10,12,14,16,18,20,22'').  Steps are also permitted after an
      asterisk, so if you want to say ``every two hours'', just use ``*/2''.
 
-(From the L<FreeBSD manpage from crontab(5)|https://www.freebsd.org/cgi/man.cgi?crontab(5)>). For brevity only the names and ranges of the values are
-described.  The "name" forms for C<month> and C<day-of-week> are currently
-not supported because the localisation issues seemed more trouble than it's
-worth.
+(From the L<FreeBSD manpage from
+crontab(5)|https://www.freebsd.org/cgi/man.cgi?crontab(5)>). For brevity
+only the names and ranges of the values are described.  The "name" forms
+for C<month> and C<day-of-week> are currently not supported because the
+localisation issues seemed more trouble than it's worth.
 
 The allowed arguments to the constructor (and attributes of the class) are:
 
