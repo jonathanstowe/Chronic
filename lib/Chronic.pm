@@ -190,7 +190,7 @@ The day of the week (starting on Monday) in the range 1 .. 7
 
 =end pod
 
-class Chronic:ver<0.0.7>:auth<github:jonathanstowe>:api<1.0> {
+class Chronic:ver<0.0.8>:auth<github:jonathanstowe>:api<1.0> {
     class Description {
 
         sub expand-expression(Str $exp, Range $r --> Array[Int] ) {
@@ -434,4 +434,4 @@ augment class DateTime {
 
 }
 
-# vim: ft=perl6 expandtab sw=4
+# vim: ft=raku expandtab sw=4

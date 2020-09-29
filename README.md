@@ -1,12 +1,12 @@
 # Chronic
 
-Scheduling thingy for Perl6
+Scheduling thingy for Raku
 
 [![Build Status](https://travis-ci.org/jonathanstowe/Chronic.svg?branch=master)](https://travis-ci.org/jonathanstowe/Chronic)
 
 ## Synopsis
 
-```perl6
+```raku
 
 # Static configuration;
 
@@ -89,7 +89,7 @@ with that frequency would be more highly optimised then this may allow.
 
 ## Installation
 
-If you have a working Rakudo Perl 6 you can install directly with *zef*:
+If you have a working Rakudo you can install directly with *zef*:
 
     # From the source directory
    
@@ -109,4 +109,4 @@ This is free software.
 
 Please see the [LICENCE](LICENCE) file in the distribution.
 
-© Jonathan Stowe 2015, 2016, 2017, 2019
+© Jonathan Stowe 2015, 2016, 2017, 2019, 2020

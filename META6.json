@@ -1,15 +1,16 @@
 {
   "name": "Chronic",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "auth": "github:jonathanstowe",
   "api": "1.0",
-  "source-url": "git://github.com/jonathanstowe/Chronic.git",
+  "source-url": "https://github.com/jonathanstowe/Chronic.git",
   "support": {
-    "irc": "irc:// irc.freenode.net/#perl6",
-    "source": "git://github.com/jonathanstowe/Chronic.git",
+    "irc": "irc:// irc.freenode.net/#raku",
+    "source": "https://github.com/jonathanstowe/Chronic.git",
     "bugtracker": "https://github.com/jonathanstowe/Chronic/issues"
   },
-  "perl": "6.^",
+  "perl": "6.*",
+  "raku": "6.*",
   "resources": [
   ],
   "build-depends": [
@@ -33,6 +34,6 @@
   "authors": [
     "Jonathan Stowe <jns+git@gellyfish.co.uk>"
   ],
-  "description": "Low-level Scheduling thingy for Perl6",
-  "meta-version": "0"
+  "description": "Low-level Scheduling thingy for Raku",
+  "meta-version": "1"
 }
