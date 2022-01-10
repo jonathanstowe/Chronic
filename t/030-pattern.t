@@ -150,7 +150,7 @@ for @tests -> $test {
         my $attr = $test<attribute>;
         my $patt =  $test<pattern>;
         lives-ok { $obj = Chronic::Description.new(|($attr => $patt)) }, "create object with pattern";
-        ok $obj."$attr"() ~~ all($test<result>.list), "and matches the expected result";
+        ok ?all($test<result>.list.map(-> $v { $obj."$attr"() ~~ $v })), "and matches the expected result";
     }, $test<attribute> ~ " with pattern '{ $test<pattern> }'";
 }
 done-testing;

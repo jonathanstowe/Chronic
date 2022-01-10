@@ -1,3 +1,5 @@
+v0.0.10		Mon 10 Jan 09:32:22 GMT 2022
+	* Fix for mishandling of Junction in test
 v0.0.9		Sat 13 Feb 10:26:07 GMT 2021
 	* Move to GH actions	
 v0.0.8		Tue 29 Sep 12:48:43 BST 2020
