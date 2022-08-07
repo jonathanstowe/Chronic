@@ -1,3 +1,5 @@
+v0.0.11	Sun  7 Aug 09:47:26 BST 2022
+	* Upload to zef repository
 v0.0.10		Mon 10 Jan 09:32:22 GMT 2022
 	* Fix for mishandling of Junction in test
 v0.0.9		Sat 13 Feb 10:26:07 GMT 2021
@@ -17,3 +19,4 @@ v0.0.3		Sat Jan 30 20:58:43 2016 +0000
 v0.0.2		Thu Jan 28 22:37:39 2016 +0000 
 	* Tosh-up
 	* Update the README
+
