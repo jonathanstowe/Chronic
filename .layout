@@ -37,7 +37,7 @@
       "children": [
         {
           "type": "file",
-          "name": "Chronic.pm"
+          "name": "Chronic.rakumod"
         }
       ],
       "type": "directory"
