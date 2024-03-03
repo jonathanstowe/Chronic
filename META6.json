@@ -32,7 +32,7 @@
   "author": "Jonathan Stowe <jns+git@gellyfish.co.uk>",
   "api": "1.0",
   "source-url": "https://github.com/jonathanstowe/Chronic.git",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "depends": [
   ]
 }

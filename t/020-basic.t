@@ -244,18 +244,18 @@ my @tests = (
     },
 );
 
-my $d = DateTime.now;
-my $now = DateTime.new(date => $d.Date, minute => $d.minute, hour => $d.hour);
+my $d = DateTime.now but Chronic::DateTimeMatcher;
+my $now = DateTime.new(date => $d.Date, minute => $d.minute, hour => $d.hour) but Chronic::DateTimeMatcher;
 ok $now ~~ Chronic::Description.new, "default comparison works";
 ok Chronic::Description.new ~~ $now, "default comparison works (the other way round";
 
 for @tests -> $test {
     $test<dt><year> = (1971 .. 2037).pick;
     if $test<result> {
-        ok Chronic::Description.new(|$test<chronic>) ~~ DateTime.new(|$test<dt>), $test<description>;
+        ok Chronic::Description.new(|$test<chronic>) ~~ DateTime.new(|$test<dt>) but Chronic::DateTimeMatcher, $test<description>;
     }
     else {
-        nok Chronic::Description.new(|$test<chronic>) ~~ DateTime.new(|$test<dt>), $test<description>;
+        nok Chronic::Description.new(|$test<chronic>) ~~ DateTime.new(|$test<dt>) but Chronic::DateTimeMatcher, $test<description>;
 
     }
 }

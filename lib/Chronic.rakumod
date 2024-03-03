@@ -130,6 +130,11 @@ This is the base supply that emits the L<DateTime> at 1 second intervals,
 it is used internally but exposed in the possibility that it may be useful
 as in the synopsis for example.
 
+If, for some reason, you want to provide your own Supply the emitted L<DateTime>
+should be truncated to second resolution (no fractional seconds,) and have the
+C<role> C<Chronic::DateTimeMatcher> applied. (Previously this would C<augment>
+C<DateTime> which is probably undesirable.)
+
 =head1 Chronic::Description
 
 This is the class that is used to match the L<DateTime> against the frequency
@@ -190,7 +195,7 @@ The day of the week (starting on Monday) in the range 1 .. 7
 
 =end pod
 
-class Chronic:ver<0.0.10>:auth<github:jonathanstowe>:api<1.0> {
+class Chronic:ver<0.0.13>:auth<zef:jonathanstowe>:api<1.0> {
     class Description {
 
         sub expand-expression(Str $exp, Range $r --> Array[Int] ) {
@@ -373,6 +378,18 @@ class Chronic:ver<0.0.10>:auth<github:jonathanstowe>:api<1.0> {
         }
     }
 
+    role DateTimeMatcher {
+        multi method ACCEPTS(Chronic::Description $d --> Bool ) {
+            self.second.Int   == 0         &&
+            self.minute       ~~ $d.minute &&
+            self.hour         ~~ $d.hour   &&
+            self.day          ~~ $d.day    &&
+            self.month        ~~ $d.month  &&
+            self.day-of-week  ~~ $d.day-of-week;
+        }
+
+    }
+
     #| This is a single supply for all clients in the process
     my Supply $supply;
 
@@ -380,7 +397,7 @@ class Chronic:ver<0.0.10>:auth<github:jonathanstowe>:api<1.0> {
     method supply( --> Supply ) {
         if not $supply.defined {
             $supply = Supply.on-demand( -> $p {
-                Supply.interval(1).tap({ $p.emit(DateTime.now.truncated-to('second')); });
+                Supply.interval(1).tap({ $p.emit(DateTime.now.truncated-to('second') but DateTimeMatcher); });
             });
         }
         $supply;
@@ -418,20 +435,6 @@ class Chronic:ver<0.0.10>:auth<github:jonathanstowe>:api<1.0> {
         }
         $promise;
     }
-}
-
-use MONKEY-TYPING;
-
-augment class DateTime {
-    multi method ACCEPTS(Chronic::Description $d --> Bool ) {
-        self.second.Int   == 0         &&
-        self.minute       ~~ $d.minute &&
-        self.hour         ~~ $d.hour   &&
-        self.day          ~~ $d.day    &&
-        self.month        ~~ $d.month  &&
-        self.day-of-week  ~~ $d.day-of-week;
-    }
-
 }
 
 # vim: ft=raku expandtab sw=4

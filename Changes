@@ -1,3 +1,5 @@
+v0.0.13 Sun  3 Mar 08:37:11 GMT 2024
+	* Use role rather than augment DateTime
 v0.0.12	Wed  5 Jul 14:23:40 BST 2023
 	* Rename library files
 v0.0.11	Sun  7 Aug 09:47:26 BST 2022
