@@ -13,8 +13,7 @@
   "raku": "6.*",
   "support": {
     "source": "https://github.com/jonathanstowe/Chronic.git",
-    "bugtracker": "https://github.com/jonathanstowe/Chronic/issues",
-    "irc": "irc:// irc.freenode.net/#raku"
+    "bugtracker": "https://github.com/jonathanstowe/Chronic/issues"
   },
   "resources": [
   ],
@@ -32,7 +31,7 @@
   "author": "Jonathan Stowe <jns+git@gellyfish.co.uk>",
   "api": "1.0",
   "source-url": "https://github.com/jonathanstowe/Chronic.git",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "depends": [
   ]
 }

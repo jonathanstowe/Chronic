@@ -20,6 +20,10 @@
           "type": "file"
         },
         {
+          "name": "035-cronspec.t",
+          "type": "file"
+        },
+        {
           "name": "020-basic.t",
           "type": "file"
         }

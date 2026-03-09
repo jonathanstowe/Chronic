@@ -352,6 +352,13 @@ class Chronic:ver<0.0.13>:auth<zef:jonathanstowe>:api<1.0> {
             day-of-week =>  &get-dows
         );
 
+        multi method new(Str $spec) {
+            my @desc = $spec.split(/\s+/);
+            my @parts = <minute hour day month day-of-week>;
+            my %params = ( @parts Z @desc).map( -> $v { Pair.new(|$v) });
+            self.new(|%params);
+        }
+
         multi method new(*%args) {
             my %new-args;
 
@@ -404,11 +411,23 @@ class Chronic:ver<0.0.13>:auth<zef:jonathanstowe>:api<1.0> {
     }
 
     #| create a supply that fires on the time specification
-    method every(*%args --> Supply ) {
-        my $description = Description.new(|%args);
-        my $supply = self.supply.grep($description);
-        $supply;
+    proto method every(|c) { * }
+
+    multi method every(Description:D $description --> Supply) {
+        self.supply.grep($description);
     }
+
+    multi method every(*%args --> Supply) {
+        my $description = Description.new(|%args);
+        self.every($description);
+    }
+
+    multi method every(Str:D $spec --> Supply) {
+        my $description = Description.new($spec);
+        self.every($description);
+    }
+
+
 
     multi method at(Int $i --> Promise ) {
         self.at(DateTime.new($i));

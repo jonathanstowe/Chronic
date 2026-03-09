@@ -25,6 +25,10 @@ react {
     whenever Chronic.every(minute => 31, hour => 21) -> $v {
         say "21:31 $v";
     }
+    # The same as above but with cron-spec
+    whenever Chronic.every('31 21 * * *') -> $v {
+        say "21:31 $v";
+    }
 
 }
 
@@ -109,4 +113,4 @@ This is free software.
 
 Please see the [LICENCE](LICENCE) file in the distribution.
 
-© Jonathan Stowe 2015, 2016, 2017, 2019, 2020
+© Jonathan Stowe 2015 - 2026

@@ -1,3 +1,5 @@
+v0.0.14 Mon  9 Mar 16:17:52 GMT 2026
+	* Allow full cronspec in `every`
 v0.0.13 Sun  3 Mar 08:37:11 GMT 2024
 	* Use role rather than augment DateTime
 v0.0.12	Wed  5 Jul 14:23:40 BST 2023
